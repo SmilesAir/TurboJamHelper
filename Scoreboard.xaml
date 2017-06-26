@@ -1,0 +1,76 @@
+﻿<Window x:Class="TurboJamHelper.Scoreboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TurboJamHelper"
+        mc:Ignorable="d"
+        Title="Scoreboard" Height="800" Width="600">
+    
+    <Grid>
+        <ItemsControl Grid.Row="1" Name="MainItemsControl">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid MaxHeight="130">
+                        <Border>
+                            <Grid Background="{Binding ScoreboardColor}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width=".5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Viewbox>
+                                    <Label Content="{Binding ScoreboardRankNumber}" FontSize="100"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="1" HorizontalAlignment="Right">
+                                    <Label Content="{Binding PlayerState1}" Foreground="{Binding PlayerStateColor1}" HorizontalContentAlignment="Right"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="2" HorizontalAlignment="Left">
+                                    <Label Content="{Binding PlayerName1, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding PlayerStateColor1}"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="3">
+                                    <Label Content="{Binding HighestScore1}" Foreground="{Binding PlayerStateColor1}"/>
+                                </Viewbox>
+
+                                <Viewbox Grid.Column="4" HorizontalAlignment="Right">
+                                    <Label Content="{Binding PlayerState2}" HorizontalContentAlignment="Right" Foreground="{Binding PlayerStateColor2}"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="5" HorizontalAlignment="Left">
+                                    <Label Content="{Binding PlayerName2, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding PlayerStateColor2}"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="6">
+                                    <Label Content="{Binding HighestScore2}" Foreground="{Binding PlayerStateColor2}"/>
+                                </Viewbox>
+
+
+                                <Viewbox Grid.Column="7">
+                                    <Label Content="Team Score:" HorizontalContentAlignment="Right"/>
+                                </Viewbox>
+                                <Viewbox Grid.Column="8">
+                                    <Label Content="{Binding TeamScore}"/>
+                                </Viewbox>
+
+                                <Viewbox Grid.Column="10">
+                                    <TextBlock HorizontalAlignment="Right" TextAlignment="Center">Score Needed<LineBreak/>For Lead:</TextBlock>
+                                </Viewbox>
+                                <Viewbox Grid.Column="11">
+                                    <Label Content="{Binding ScoreToTakeLeadString}"/>
+                                </Viewbox>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>
