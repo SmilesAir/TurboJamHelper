@@ -349,6 +349,7 @@ namespace TurboJamHelper
 				OnPropertyChanged("TeamState");
 				OnPropertyChanged("PlayerState1");
 				OnPropertyChanged("PlayerState2");
+				OnPropertyChanged("ScoreboardColor");
 			}
 		}
 
@@ -478,6 +479,7 @@ namespace TurboJamHelper
 			OnPropertyChanged("TeamScore");
 			OnPropertyChanged("ScoreToTakeLeadString");
 			OnPropertyChanged("ScoreboardRankNumber");
+			OnPropertyChanged("ScoreboardColor");
 		}
 
 		private void ResetPlayerStateColor()
