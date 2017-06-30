@@ -38,6 +38,7 @@ namespace TurboJamHelper
 		public void Init(EventData data)
 		{
 			MainItemsControl.ItemsSource = data.Data;
+			TopLevelGrid.DataContext = data;
 		}
 
 		public void Update()

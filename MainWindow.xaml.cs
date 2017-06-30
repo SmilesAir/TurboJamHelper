@@ -66,11 +66,39 @@ namespace TurboJamHelper
 
 		Scoreboard scoreboard = new Scoreboard();
 
+		Timer updateTimer = new Timer();
+		
+		public float RoundMinutes
+		{
+			get { return data.RoundMinutes; }
+			set
+			{
+				data.RoundMinutes = value;
+				OnPropertyChanged("RoundMinutes");
+
+				updateTimer.Stop();
+			}
+		}
+		public string RoundTimeRemaining
+		{
+			get { return "Time Remaining: " + data.RoundTimeRemaining; }
+		}
+
 		public MainWindow()
 		{
 			InitializeComponent();
 
 			TopLevelGrid.DataContext = this;
+
+			updateTimer.Elapsed += UpdateTimer_Elapsed;
+			updateTimer.Interval = 1000;
+		}
+
+		private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			++data.CurrentTimeSeconds;
+
+			OnPropertyChanged("RoundTimeRemaining");
 		}
 
 		private void NextPlayer()
@@ -248,6 +276,22 @@ namespace TurboJamHelper
 					return;
 				}
 			}
+		}
+
+		private void StartRound_Click(object sender, RoutedEventArgs e)
+		{
+			playingTeamIndex = 0;
+			bFirstPlayer = true;
+			data.CurrentTimeSeconds = 0;
+
+			UpdateDataState();
+
+			updateTimer.Start();
+		}
+
+		private void StopRound_Click(object sender, RoutedEventArgs e)
+		{
+			updateTimer.Stop();
 		}
 	}
 
@@ -512,9 +556,57 @@ namespace TurboJamHelper
 		PlayerTurn2
 	}
 
-	public class EventData
+	public class EventData : INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected void OnPropertyChanged(string name)
+		{
+			PropertyChangedEventHandler handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(name));
+			}
+		}
 		public ObservableCollection<TeamData> Data = new ObservableCollection<TeamData>();
 		public int TopTeamScore = 0;
+		float roundMinutes = 25f;
+		public float RoundMinutes
+		{
+			get { return roundMinutes; }
+			set
+			{
+				roundMinutes = value;
+				OnPropertyChanged("RoundMinutes");
+			}
+		}
+		int currentTimeSeconds = 0;
+		public int CurrentTimeSeconds
+		{
+			get { return currentTimeSeconds; }
+			set
+			{
+				currentTimeSeconds = value;
+				OnPropertyChanged("CurrentTimeSeconds");
+				OnPropertyChanged("RoundTimeRemaining");
+			}
+		}
+		public string RoundTimeRemaining
+		{
+			get
+			{
+				int roundSeconds = (int)(RoundMinutes * 60);
+
+				if (CurrentTimeSeconds >= roundSeconds)
+				{
+					return "Time Ended";
+				}
+
+				int remainingSeconds = roundSeconds - CurrentTimeSeconds;
+				int minutes = remainingSeconds / 60;
+				int seconds = remainingSeconds % 60;
+
+				return minutes.ToString() + ":" + seconds.ToString("00");
+			}
+		}
 	}
 }
